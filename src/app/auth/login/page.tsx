@@ -5,7 +5,7 @@ import React from "react";
 
 const LoginPage = () => {
   return (
-    <main className="flex h-full flex-col gap-y-4 items-center justify-center primary-gradient">
+    <main className="flex h-full min-h-screen flex-col gap-y-4 items-center justify-center primary-gradient">
       <LoginForm />
     </main>
   );

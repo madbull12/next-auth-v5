@@ -49,7 +49,7 @@ const LoginForm = () => {
   }
   return (
     <div className="min-w-96">
-      <CardWrapper>
+      <CardWrapper desc="Welcome back">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
