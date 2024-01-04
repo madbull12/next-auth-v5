@@ -1,47 +1,33 @@
-"use client";
-
 import React, { useState, useTransition } from "react";
 import CardWrapper from "./card-wrapper";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { LoginSchema } from "@/schemas";
-import * as z from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-
-import login from "@/actions/login";
-import AlertError from "../ui/alert-error";
 import AlertSuccess from "../ui/alert-success";
-
-const LoginForm = () => {
+import AlertError from "../ui/alert-error";
+import { useForm } from "react-hook-form";
+import { RegisterSchema } from "@/schemas";
+import * as z from 'zod'
+import { zodResolver } from "@hookform/resolvers/zod";
+import register from "@/actions/register";
+const RegisterForm = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
-
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof LoginSchema>) {
+  function onSubmit(values: z.infer<typeof RegisterSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setError("")
     setSuccess("")
     startTransition(() => {
-      login(values).then((data) => {
+      register(values).then((data) => {
         setError(data?.error as string)
         setSuccess(data?.success as string)
       });
@@ -103,4 +89,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

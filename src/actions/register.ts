@@ -1,9 +1,9 @@
 "use server"
-import { LoginSchema } from '@/schemas';
+import { RegisterSchema } from '@/schemas';
 import * as z from 'zod'
 
-export default async function login(values:z.infer<typeof LoginSchema>) {
-    const validatedFields = LoginSchema.safeParse(values)
+export default async function register(values:z.infer<typeof RegisterSchema>) {
+    const validatedFields = RegisterSchema.safeParse(values)
 
     if(!validatedFields.success) {
         return {
