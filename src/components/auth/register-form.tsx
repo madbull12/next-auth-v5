@@ -36,7 +36,7 @@ const RegisterForm = () => {
   }
   return (
     <div className="min-w-96">
-      <CardWrapper desc="Create an account">
+      <CardWrapper desc="Create an account" href="/auth/login" type="register">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -98,7 +98,7 @@ const RegisterForm = () => {
             <AlertError message={error} />
             <AlertSuccess message={success} />
             <Button disabled={isPending} type="submit" className="w-full">
-              Submit
+              Create an account
             </Button>
           </form>
         </Form>

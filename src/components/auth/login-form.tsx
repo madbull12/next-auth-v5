@@ -49,7 +49,7 @@ const LoginForm = () => {
   }
   return (
     <div className="min-w-96">
-      <CardWrapper desc="Welcome back">
+      <CardWrapper desc="Welcome back" href="/auth/register" type="login">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -94,7 +94,7 @@ const LoginForm = () => {
             <AlertError message={error} />
             <AlertSuccess message={success} />
             <Button disabled={isPending} type="submit" className="w-full">
-              Submit
+              Login
             </Button>
           </form>
         </Form>
