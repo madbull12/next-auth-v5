@@ -1,13 +1,21 @@
-import React from 'react'
-import { auth } from '@/auth'
-const SettingsPage = async() => {
-    const session = await auth();
+import React from "react";
+import { auth, signOut } from "@/auth";
+const SettingsPage = async () => {
+  const session = await auth();
 
   return (
     <div>
-        {JSON.stringify(session)}
+      {JSON.stringify(session)}
+      <form
+        action={async () => {
+          "use server";
+          await signOut();
+        }}
+      >
+        <button type="submit">Sign out</button>
+      </form>
     </div>
-  )
-}
+  );
+};
 
-export default SettingsPage
+export default SettingsPage;
