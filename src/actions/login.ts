@@ -28,6 +28,11 @@ export default async function login(values: z.infer<typeof LoginSchema>) {
           return {
             error: "Invalid Credentials",
           };
+
+        case "Verification":
+          return {
+            error: "Email not verified",
+          };
         default:
           return {
             error: "Something went wrong!",

@@ -21,9 +21,15 @@ import { Button } from "../ui/button";
 import login from "@/actions/login";
 import AlertError from "../ui/alert-error";
 import AlertSuccess from "../ui/alert-success";
+import { useSearchParams } from "next/navigation";
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
+  const searchParams = useSearchParams();
+  const urlError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "Email already in use with different provider"
+      : "";
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -38,12 +44,12 @@ const LoginForm = () => {
   function onSubmit(values: z.infer<typeof LoginSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    setError("")
-    setSuccess("")
+    setError("");
+    setSuccess("");
     startTransition(() => {
       login(values).then((data) => {
-        setError(data?.error as string)
-        setSuccess(data?.success as string)
+        setError(data?.error as string);
+        // setSuccess(data?.success as string);
       });
     });
   }
@@ -91,7 +97,7 @@ const LoginForm = () => {
                 </FormItem>
               )}
             />
-            <AlertError message={error} />
+            <AlertError message={error || urlError} />
             <AlertSuccess message={success} />
             <Button disabled={isPending} type="submit" className="w-full">
               Login
