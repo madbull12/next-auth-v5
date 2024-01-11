@@ -49,7 +49,7 @@ const LoginForm = () => {
     startTransition(() => {
       login(values).then((data) => {
         setError(data?.error as string);
-        // setSuccess(data?.success as string);
+        setSuccess(data?.success as string);
       });
     });
   }
