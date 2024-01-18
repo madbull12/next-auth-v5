@@ -11,12 +11,12 @@ import Social from "./social";
 import Link from "next/link";
 
 interface Props {
-  children:React.ReactNode;
-  desc:string;
-  href:string;
-  type:"register" | "login"
+  children: React.ReactNode;
+  desc: string;
+  href: string;
+  type?: "register" | "login";
 }
-const CardWrapper = ({ children,desc,href,type }: Props) => {
+const CardWrapper = ({ children, desc, href, type }: Props) => {
   return (
     <Card className="w-full  gap-y-2">
       <CardHeader>
@@ -24,12 +24,16 @@ const CardWrapper = ({ children,desc,href,type }: Props) => {
         <CardDescription className="text-center">{desc}</CardDescription>
       </CardHeader>
       <CardContent>{children}</CardContent>
-      <CardFooter className="w-full flex flex-col">
-        <Social />
-        <Link href={href} className="text-sm mt-4 underline">
-          {type==="login" ? "Don't have an account yet?" : "Already have an account?"}
-        </Link>
-      </CardFooter>
+      {type ? (
+        <CardFooter className="w-full flex flex-col">
+          <Social />
+          <Link href={href} className="text-sm mt-4 underline">
+            {type === "login"
+              ? "Don't have an account yet?"
+              : "Already have an account?"}
+          </Link>
+        </CardFooter>
+      ) : null}
     </Card>
   );
 };

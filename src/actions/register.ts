@@ -9,38 +9,33 @@ import { sendVerificationEmail } from "@/lib/mail";
 export default async function register(values: z.infer<typeof RegisterSchema>) {
   const validatedFields = RegisterSchema.safeParse(values);
 
-
-
   if (!validatedFields.success) {
     return {
       error: "Invalid fields!",
     };
   }
 
-  const { email,password,name } = validatedFields.data;
-  const hashedPassword = await bcrypt.hash(password,10);
-  const existingUser = await getUserByEmail(email)
+  const { email, password, name } = validatedFields.data;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const existingUser = await getUserByEmail(email);
 
-  if(existingUser) {
+  if (existingUser) {
     return {
-        error:"Email is already in use"
-    }
+      error: "Email is already in use",
+    };
   }
 
   await db.user.create({
-    data:{
-        name,
-        email,
-        password:hashedPassword
-    }
-  })
+    data: {
+      name,
+      email,
+      password: hashedPassword,
+    },
+  });
 
   const verificationToken = await generateVerificationToken(email);
-  await sendVerificationEmail(
-    verificationToken.email,
-    verificationToken.token
-  )
+  await sendVerificationEmail(verificationToken.email, verificationToken.token);
   return {
-    success:"Confirmation email sent!"
+    success: "Confirmation email sent!",
   };
 }
