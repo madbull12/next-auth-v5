@@ -13,7 +13,7 @@ import Link from "next/link";
 interface Props {
   children: React.ReactNode;
   desc: string;
-  href: string;
+  href?: string;
   type?: "register" | "login";
 }
 const CardWrapper = ({ children, desc, href, type }: Props) => {
@@ -27,7 +27,7 @@ const CardWrapper = ({ children, desc, href, type }: Props) => {
       {type ? (
         <CardFooter className="w-full flex flex-col">
           <Social />
-          <Link href={href} className="text-sm mt-4 underline">
+          <Link href={href as string} className="text-sm mt-4 underline">
             {type === "login"
               ? "Don't have an account yet?"
               : "Already have an account?"}

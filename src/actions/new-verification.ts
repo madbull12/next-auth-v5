@@ -3,6 +3,7 @@
 import { db } from "@/lib/db";
 import { getUserByEmail } from "@/data/users";
 import { getVerificationTokenByToken } from "@/data/verification-token";
+import email from "next-auth/providers/email";
 
 
 export const newVerification = async(token:string) => {
@@ -19,5 +20,32 @@ export const newVerification = async(token:string) => {
         return {
             error:"Token has expired"
         }
+    }
+
+    const existingUser = await getUserByEmail(existingToken.email);
+    if(!existingUser) {
+        return {
+            error:"Email doesn't exist"
+        }
+    }
+
+    await db.user.update({
+        where:{
+            id:existingUser.id
+        },
+        data:{
+            emailVerified:new Date(),
+            email:existingToken.email
+        }
+    });
+
+    await db.verificationToken.delete({
+        where:{
+            id:existingToken.id
+        }
+    });
+
+    return {
+        success:"Email verified"
     }
 }

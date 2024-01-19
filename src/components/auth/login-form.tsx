@@ -22,6 +22,7 @@ import login from "@/actions/login";
 import AlertError from "../ui/alert-error";
 import AlertSuccess from "../ui/alert-success";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -92,6 +93,12 @@ const LoginForm = () => {
                       {...field}
                     />
                   </FormControl>
+                  <Button variant={'link'} size='sm' asChild className="font-normal px-0">
+                    <Link href="/auth/reset">
+                      Forgot password?
+                    </Link>
+
+                  </Button>
 
                   <FormMessage />
                 </FormItem>
