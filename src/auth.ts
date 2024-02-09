@@ -4,6 +4,7 @@ import authConfig from "@/auth.config";
 import { db } from "@/lib/db";
 import { getUserById } from "./data/users";
 import { UserRole } from "@prisma/client";
+import { getTwoFactorConfirmationByUserId } from "./actions/two-factor-confirmation";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -19,34 +20,46 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
-  pages:{
-    signIn:"/auth/login",
-    error:"/auth/error",
-    
+  pages: {
+    signIn: "/auth/login",
+    error: "/auth/error",
   },
-  events:{
+  events: {
     async linkAccount({ user }) {
       await db.user.update({
-        where:{
-          id:user.id
+        where: {
+          id: user.id,
         },
-        data:{
-          emailVerified:new Date()
-        }
-      })
-    }
+        data: {
+          emailVerified: new Date(),
+        },
+      });
+    },
   },
   callbacks: {
-    async signIn({user,account}) {
+    async signIn({ user, account }) {
       //allow oauth without email verification
-      if(account?.provider !== "credentials") return true;
+      if (account?.provider !== "credentials") return true;
       const existingUser = await getUserById(user.id);
 
       //prevent users without email verification
-      if(!existingUser || !existingUser.emailVerified) {
+      if (!existingUser || !existingUser.emailVerified) {
         return false;
       }
-      return true
+
+      if (existingUser.isTwoFactorEnabled) {
+        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
+          user.id
+        );
+        if (!twoFactorConfirmation) return false;
+
+        await db.twoFactorConfirmation.delete({
+          where: {
+            id: twoFactorConfirmation.id,
+          },
+        });
+      }
+      return true;
     },
     async session({ token, session }) {
       if (token.sub && session.user) {
