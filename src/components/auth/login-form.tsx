@@ -93,11 +93,13 @@ const LoginForm = () => {
                       {...field}
                     />
                   </FormControl>
-                  <Button variant={'link'} size='sm' asChild className="font-normal px-0">
-                    <Link href="/auth/reset">
-                      Forgot password?
-                    </Link>
-
+                  <Button
+                    variant={"link"}
+                    size="sm"
+                    asChild
+                    className="font-normal px-0"
+                  >
+                    <Link href="/auth/reset">Forgot password?</Link>
                   </Button>
 
                   <FormMessage />
